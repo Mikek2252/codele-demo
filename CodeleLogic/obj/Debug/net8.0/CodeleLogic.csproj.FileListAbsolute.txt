@@ -1,0 +1,11 @@
+/Users/michaelkerr/net/codele-demo/CodeleLogic/bin/Debug/net8.0/CodeleLogic.deps.json
+/Users/michaelkerr/net/codele-demo/CodeleLogic/bin/Debug/net8.0/CodeleLogic.dll
+/Users/michaelkerr/net/codele-demo/CodeleLogic/bin/Debug/net8.0/CodeleLogic.pdb
+/Users/michaelkerr/net/codele-demo/CodeleLogic/obj/Debug/net8.0/CodeleLogic.GeneratedMSBuildEditorConfig.editorconfig
+/Users/michaelkerr/net/codele-demo/CodeleLogic/obj/Debug/net8.0/CodeleLogic.AssemblyInfoInputs.cache
+/Users/michaelkerr/net/codele-demo/CodeleLogic/obj/Debug/net8.0/CodeleLogic.AssemblyInfo.cs
+/Users/michaelkerr/net/codele-demo/CodeleLogic/obj/Debug/net8.0/CodeleLogic.csproj.CoreCompileInputs.cache
+/Users/michaelkerr/net/codele-demo/CodeleLogic/obj/Debug/net8.0/CodeleLogic.dll
+/Users/michaelkerr/net/codele-demo/CodeleLogic/obj/Debug/net8.0/refint/CodeleLogic.dll
+/Users/michaelkerr/net/codele-demo/CodeleLogic/obj/Debug/net8.0/CodeleLogic.pdb
+/Users/michaelkerr/net/codele-demo/CodeleLogic/obj/Debug/net8.0/ref/CodeleLogic.dll

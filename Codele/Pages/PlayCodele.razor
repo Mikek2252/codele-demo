@@ -1,0 +1,126 @@
+﻿@page "/playcodele"
+@inject HttpClient Http;
+@using CodeleLogic
+
+<h3>PlayCodele</h3>
+<p>Guess the 5 letter coding word</p>
+
+<br>
+<p>Attempt #: @attempts</p>
+
+<table>
+  @foreach (var guess in guesses)
+  {
+    List<(char, LetterStatus)>? statuses = guess.GuessStatus;
+    <tr>
+      <div class="btn-group" role="group" aria-label="example">
+        @if (statuses != null) {
+          foreach (var status in statuses) {
+            char letter = Char.ToUpper(status.Item1);
+            if (status.Item2 == LetterStatus.Correct) {<button type="button" class="btn btn-success">@letter</button>}
+            else if (status.Item2 == LetterStatus.IncorrectPosition) {<button type="button" class="btn btn-warning">@letter</button>}
+            else {<button type="button" class="btn btn-secondary">@letter</button>}
+          }
+        }
+      </div>
+    </tr>
+  }
+</table>
+
+<input placeholder="Type your guess" @bind="newGuess" />
+<button @onclick="SubmitGuess">Submit</button>
+
+@if (displayGuessSizeMsg == true) {
+    <p style="color: rgb(197, 3, 3);">Guess must be 5 characters long</p>
+}
+
+<!-- modal popup to display the game outcome -->
+@if (showModal == true) {
+    <div class="modal fade show" id="myModal" style="display:block; background-color: rgba(10,10,10,.8);"
+        aria-modal="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">@gameStatusMessage</h4>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Correct Answer: </strong> @correctGuess</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" @onclick="StartNewGame">New Game?</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    private List<Guess> guesses = new();
+
+    private string? newGuess;
+
+    private string[]? answers;
+
+    private string? correctGuess;
+
+    private int attempts;
+
+    private string? gameStatusMessage;
+
+    private bool showModal { get; set;}
+
+    private bool displayGuessSizeMsg { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        showModal = false;
+        attempts = 1;
+        answers = await Http.GetFromJsonAsync<string[]>("sample-data/codele-word-library.json");
+        Random randomGenerator = new Random();
+        correctGuess = "coder"; //answers[randomGenerator.Next(0, answers.Length)];
+    }
+
+    // Close the game status modal
+    private void ModalClose() {
+        showModal = false;
+    } 
+    private void SubmitGuess(MouseEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(newGuess)) {
+          if (newGuess.Length != 5) displayGuessSizeMsg = true;
+          else {
+            displayGuessSizeMsg = false;
+            Guess guess = new Guess(newGuess);
+
+            if (attempts < 5) {
+              guess.GetGuessStatuses(correctGuess);
+
+              if (guess.IsWinningGuess(correctGuess)) {
+                showModal = true;
+                gameStatusMessage = "You Won";
+              } else {
+                attempts++;
+              }
+            } else {
+              showModal = true;
+              gameStatusMessage = "You Lose";
+            }
+            guesses.Add(guess);
+
+            newGuess = string.Empty;
+          }
+        } else {
+          displayGuessSizeMsg = true;
+        }
+    }
+    private void StartNewGame(MouseEventArgs e)
+    {
+        guesses.Clear();
+        attempts = 1;
+        Random randomGenerator = new Random();
+        correctGuess = "coder";
+        showModal = false;
+        newGuess = string.Empty;
+    }
+}
